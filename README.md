@@ -65,4 +65,4 @@ private async Awaitable ExpensiveOperation2(SchedulerYield yielder, List<Vector3
 
 ## Gotcha with ToBackground() and ToMain()
 
-Note that on the desktop platform, when an async child function is called, it will start running on the parent's thread. If the child changes its thread using ToBackground() or ToMain(), this change will not propogate to the parent once the child returns. This matches the behaviour of the ordinary Awaitable class in Unity.
+Note that on the desktop platform, when an async child function is called, it will start running on the parent's thread. If the child function changes its thread using ToBackground() or ToMain(), this change will not propogate to the parent function once the child function returns. This matches the behaviour of the ordinary Awaitable class in Unity.
