@@ -22,7 +22,7 @@ public void Foo() {
 
 private async Awaitable MyTask(SchedulerYield yielder) {
 	// The yielder object is provided by our library and has three primary methods:
-	// ToBackGround() - move the current task to a background thread on desktop. No-op on web
+	// ToBackground() - move the current task to a background thread on desktop. No-op on web
 	// ToMain() - move the current task to the main thread on desktop. No-op on web
 	// Yield() - Co-operate with the scheduler. If there's time left in the budget, the task will continue to run. Otherwise, suspend the task until the next frame. No-op on desktop
 
