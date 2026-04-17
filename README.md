@@ -20,43 +20,43 @@ public void Foo() {
 	scheduler.Run(MyTask);
 }
 
-private async Awaitable MyTask(SchedulerYield yield) {
-	// The yield object is provided by our library and has three primary methods:
+private async Awaitable MyTask(SchedulerYield yielder) {
+	// The yielder object is provided by our library and has three primary methods:
 	// ToBackGround() - move the current task to a background thread on desktop. No-op on web
 	// ToMain() - move the current task to the main thread on desktop. No-op on web
 	// Yield() - Co-operate with the scheduler. If there's time left in the budget, the task will continue to run. Otherwise, suspend the task until the next frame. No-op on desktop
 
 	// Example:
-	await yield.ToBackground();
-	var myResults = await ExpensiveOperation(yield);
-	await yield.ToMain();
+	await yielder.ToBackground();
+	var myResults = await ExpensiveOperation(yielder);
+	await yielder.ToMain();
 	// Do some more stuff, this time on the main thread
 	// ...
 	// Switch to background again
-	await yield.ToBackground();
-	await ExpensiveOperation2(yield, myResults);
+	await yielder.ToBackground();
+	await ExpensiveOperation2(yielder, myResults);
 	// Do some more stuff, still on the background thread here
 }
 
-private async Awaitable<List<Vector3Int>> ExpensiveOperation(SchedulerYield yield) {
+private async Awaitable<List<Vector3Int>> ExpensiveOperation(SchedulerYield yielder) {
 	List<Vector3Int> ret = new List<Vector3Int>();
 	for (int x = 0; x < 10000; x++) {
-		// In your real code, look for loops from which it is okay to co-operatively yield to the scheduler
+		// In your real code, look for loops from which it is okay to co-operatively yielder to the scheduler
 		ret.Add(new Vector3Int(x, x, x));
-		await yield.Yield();
+		await yielder.Yield();
 	}
 
 	return ret;
 }
 
-private async Awaitable ExpensiveOperation2(SchedulerYield yield, List<Vector3Int> data) {
+private async Awaitable ExpensiveOperation2(SchedulerYield yielder, List<Vector3Int> data) {
 	foreach (var pos in data) {
 		// Do some more computation here
-		// Co-operatively yield
-		await yield.Yield();
+		// Co-operatively yielder
+		await yielder.Yield();
 	}
 
-	await yield.ToMain();
+	await yielder.ToMain();
 
 	// Do some stuff on the main thread
 	// Note that when we return to MyTask, control will be on the background thread (see gotcha note below)
