@@ -52,7 +52,7 @@ private async Awaitable<List<Vector3Int>> ExpensiveOperation(SchedulerYield yiel
 private async Awaitable ExpensiveOperation2(SchedulerYield yielder, List<Vector3Int> data) {
 	foreach (var pos in data) {
 		// Do some more computation here
-		// Co-operatively yielder
+		// Co-operatively yield
 		await yielder.Yield();
 	}
 
